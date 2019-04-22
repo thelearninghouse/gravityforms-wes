@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: TLH Gravity Forms Populate
- * Description: Manage cookies and add them to Gravity Form
- * Version: 20190408
+ * Plugin Name: Gravity Forms - WES
+ * Description: Manage cookies and add them to Gravity Forms
+ * Version: 1.0.0
  */
 
 function tlh_gravity_forms_modify_fields( $field_content, $field ) {
