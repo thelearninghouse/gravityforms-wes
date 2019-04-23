@@ -2,6 +2,7 @@
 /**
  * Plugin Name: Gravity Forms - WES
  * Description: Manage cookies and add them to Gravity Forms
+ * Author: Kurt Rank
  * Version: 1.0.0
  */
 
