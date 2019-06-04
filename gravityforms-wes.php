@@ -22,3 +22,17 @@ function tlh_gravity_forms_populate() {
 	wp_enqueue_script( 'tlh-gravity-forms-populate' );
 }
 add_action( 'wp_enqueue_scripts', 'tlh_gravity_forms_populate' );
+
+// add async attribute
+function tlh_gravity_forms_async_attribute( $tag, $handle ) {
+	// add script handles to the array below
+	$scripts_to_async = array( 'js-cookie', 'tlh-gravity-forms-populate' );
+
+	foreach ( $scripts_to_async as $async_script ) {
+		if ( $async_script === $handle ) {
+			return str_replace( ' src', ' async="async" src', $tag );
+		}
+	}
+	return $tag;
+}
+add_filter( 'script_loader_tag', 'tlh_gravity_forms_async_attribute', 10, 2 );
