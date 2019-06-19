@@ -3,7 +3,7 @@
  * Plugin Name: Gravity Forms - WES
  * Description: Manage cookies and add them to Gravity Forms
  * Author: Kurt Rank
- * Version: 1.0.4
+ * Version: 1.0.5
  */
 
 function tlh_gravity_forms_modify_fields( $field_content, $field ) {
