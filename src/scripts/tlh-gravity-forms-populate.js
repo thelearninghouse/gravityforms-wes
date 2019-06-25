@@ -70,7 +70,7 @@ GRAV_FIELDS.forEach(function(element) {
 		}
 	}
 	if (cookieVal) {
-		Cookies.set(element, cookieVal, { expires: 1 });
+		Cookies.set(element, cookieVal);
 	}
 });
 

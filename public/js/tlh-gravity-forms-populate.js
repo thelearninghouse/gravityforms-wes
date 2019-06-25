@@ -44,6 +44,7 @@ function handleUtmSource() {
 		: document.referrer
 		? document.referrer
 		: window.location.host;
+	console.log("originalRef: " + originalRef);
 
 	if (
 		SEARCH_ENGINES.some(function(substr) {
@@ -79,9 +80,7 @@ GRAV_FIELDS.forEach(function(element) {
 	}
 
 	if (cookieVal) {
-		Cookies.set(element, cookieVal, {
-			expires: 1
-		});
+		Cookies.set(element, cookieVal);
 	}
 });
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -93,14 +92,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		if (field && !field.value) {
 			// common logic to check cookie and get variable for each item first
 			if (cookieVal) {
+				console.log(
+					"Setting " + element + " to " + cookieVal + " from cookie."
+				);
 				field.value = cookieVal;
 			} else if (getVal) {
+				console.log(
+					"Setting " + element + " to " + getVal + " from get parameter."
+				);
 				field.value = getVal;
 			} else if (element === "originalreferrer") {
 				// extra handling for originalreferrer if cookie or get are not set
 				field.value = window.location.hostname;
 			} else if (element === "utm_source") {
-				// extra handling for utm_source if cookie or get are not set
+				console.log(
+					"Setting " + element + " with custom function to " + handleUtmSource()
+				); // extra handling for utm_source if cookie or get are not set
+
 				field.value = handleUtmSource();
 			}
 		} // end field
