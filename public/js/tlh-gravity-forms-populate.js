@@ -68,18 +68,22 @@ function handleUtmSource() {
 } // Begin main functionality
 
 GRAV_FIELDS.forEach(function(element) {
-	var cookieVal = false;
+	var cookieVal = false; // if (!Cookies.get(element)) {
 
-	if (!Cookies.get(element)) {
-		if (element === "originalreferrer") {
-			cookieVal = document.referrer ? document.referrer : window.location.host;
-		} else {
-			cookieVal = getQueryVariable(element);
-		}
-	}
+	if (element === "originalreferrer") {
+		cookieVal = document.referrer ? document.referrer : window.location.host;
+	} else {
+		cookieVal = getQueryVariable(element);
+	} // }
 
-	if (cookieVal) {
+	if (cookieVal && element != "originalreferrer") {
 		Cookies.set(element, cookieVal);
+	} else if (cookieVal && element === "originalreferrer") {
+		if (!document.referrer.startsWith(location.origin) && document.referrer) {
+			Cookies.set(element, cookieVal);
+		} else if (!document.referrer) {
+			Cookies.set(element, cookieVal);
+		}
 	}
 });
 document.addEventListener("DOMContentLoaded", function(event) {

@@ -62,15 +62,21 @@ function handleUtmSource() {
 // Begin main functionality
 GRAV_FIELDS.forEach(function(element) {
 	let cookieVal = false;
-	if (!Cookies.get(element)) {
-		if (element === "originalreferrer") {
-			cookieVal = document.referrer ? document.referrer : window.location.host;
-		} else {
-			cookieVal = getQueryVariable(element);
-		}
+	// if (!Cookies.get(element)) {
+	if (element === "originalreferrer") {
+		cookieVal = document.referrer ? document.referrer : window.location.host;
+	} else {
+		cookieVal = getQueryVariable(element);
 	}
-	if (cookieVal) {
+	// }
+	if (cookieVal && element != "originalreferrer") {
 		Cookies.set(element, cookieVal);
+	} else if (cookieVal && element === "originalreferrer") {
+		if (!document.referrer.startsWith(location.origin) && document.referrer) {
+			Cookies.set(element, cookieVal);
+		} else if (!document.referrer) {
+			Cookies.set(element, cookieVal);
+		}
 	}
 });
 
