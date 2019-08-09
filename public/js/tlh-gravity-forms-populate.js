@@ -90,36 +90,40 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	GRAV_FIELDS.forEach(function(element) {
 		var cookieVal = Cookies.get(element);
 		var getVal = getQueryVariable(element);
-		var field = document.querySelector('[data-populate="' + element + '"]');
+		var field = document.querySelectorAll('[data-populate="' + element + '"]');
 
 		if (field && !field.value) {
-			// common logic to check cookie and get variable for each item first
-			if (cookieVal) {
-				field.value = cookieVal;
-			} else if (getVal) {
-				field.value = getVal;
-			} else if (element === "originalreferrer") {
-				// extra handling for originalreferrer if cookie or get are not set
-				field.value = window.location.hostname;
-			} else if (element === "utm_source") {
-				// extra handling for utm_source if cookie or get are not set
-				field.value = handleUtmSource();
-			}
+			field.forEach(function(value, i) {
+				// common logic to check cookie and get variable for each item first
+				if (cookieVal) {
+					field[i].value = cookieVal;
+				} else if (getVal) {
+					field[i].value = getVal;
+				} else if (element === "originalreferrer") {
+					// extra handling for originalreferrer if cookie or get are not set
+					field[i].value = window.location.hostname;
+				} else if (element === "utm_source") {
+					// extra handling for utm_source if cookie or get are not set
+					field[i].value = handleUtmSource();
+				}
+			});
 		} // end field
 	});
-	var orderIdField = document.querySelector('[data-populate="orderid"]');
+	var orderIdField = document.querySelectorAll('[data-populate="orderid"]');
 
 	if (orderIdField) {
-		var date = new Date();
-		var dateMonth = date.getMonth() + 1;
-		orderIdField.value =
-			"" +
-			date.getFullYear() +
-			dateMonth +
-			date.getDate() +
-			date.getHours() +
-			date.getMinutes() +
-			date.getSeconds() +
-			getRandomInt(0, 99999);
+		orderIdField.forEach(function(value, i) {
+			var date = new Date();
+			var dateMonth = date.getMonth() + 1;
+			orderIdField[i].value =
+				"" +
+				date.getFullYear() +
+				dateMonth +
+				date.getDate() +
+				date.getHours() +
+				date.getMinutes() +
+				date.getSeconds() +
+				getRandomInt(0, 99999);
+		});
 	}
 });
