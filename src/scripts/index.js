@@ -1,6 +1,6 @@
-"use strict";
+const Cookies = require("js-cookie");
 
-var GRAV_FIELDS = [
+const GRAV_FIELDS = [
 	"utm_source",
 	"utm_campaign",
 	"utm_medium",
@@ -15,20 +15,19 @@ var GRAV_FIELDS = [
 	"mkt1",
 	"mkt2"
 ];
-var SEARCH_ENGINES = ["bing", "google", "yahoo"]; // Helpers
 
+const SEARCH_ENGINES = ["bing", "google", "yahoo"];
+
+// Helpers
 function getQueryVariable(variable) {
 	var query = window.location.search.substring(1);
 	var vars = query.split("&");
-
 	for (var i = 0; i < vars.length; i++) {
 		var pair = vars[i].split("=");
-
 		if (pair[0] == variable) {
 			return pair[1];
 		}
 	}
-
 	return false;
 }
 
@@ -39,17 +38,12 @@ function getRandomInt(min, max) {
 }
 
 function handleUtmSource() {
-	var originalRef = Cookies.get("originalreferrer")
+	const originalRef = Cookies.get("originalreferrer")
 		? Cookies.get("originalreferrer")
 		: document.referrer
 		? document.referrer
 		: window.location.host;
-
-	if (
-		SEARCH_ENGINES.some(function(substr) {
-			return originalRef.includes(substr);
-		})
-	) {
+	if (SEARCH_ENGINES.some(substr => originalRef.includes(substr))) {
 		return "Organic";
 	} else if (
 		(originalRef.includes(window.location.hostname) &&
@@ -65,17 +59,18 @@ function handleUtmSource() {
 	} else {
 		return "Referring";
 	}
-} // Begin main functionality
+}
 
+// Begin main functionality
 GRAV_FIELDS.forEach(function(element) {
-	var cookieVal = false; // if (!Cookies.get(element)) {
-
+	let cookieVal = false;
+	// if (!Cookies.get(element)) {
 	if (element === "originalreferrer") {
 		cookieVal = document.referrer ? document.referrer : window.location.host;
 	} else {
 		cookieVal = getQueryVariable(element);
-	} // }
-
+	}
+	// }
 	if (cookieVal && element != "originalreferrer") {
 		Cookies.set(element, cookieVal);
 	} else if (cookieVal && element === "originalreferrer") {
@@ -99,9 +94,11 @@ if (document.readyState !== "loading") {
 
 function gravityFields() {
 	GRAV_FIELDS.forEach(function(element) {
-		var cookieVal = Cookies.get(element);
-		var getVal = getQueryVariable(element);
-		var field = document.querySelectorAll('[data-populate="' + element + '"]');
+		const cookieVal = Cookies.get(element);
+		const getVal = getQueryVariable(element);
+		const field = document.querySelectorAll(
+			'[data-populate="' + element + '"]'
+		);
 
 		if (field && !field.value) {
 			field.forEach(function(value, i) {
@@ -120,12 +117,12 @@ function gravityFields() {
 			});
 		} // end field
 	});
-	var orderIdField = document.querySelectorAll('[data-populate="orderid"]');
 
+	const orderIdField = document.querySelectorAll('[data-populate="orderid"]');
 	if (orderIdField) {
 		orderIdField.forEach(function(value, i) {
-			var date = new Date();
-			var dateMonth = date.getMonth() + 1;
+			const date = new Date();
+			const dateMonth = date.getMonth() + 1;
 			orderIdField[i].value =
 				"" +
 				date.getFullYear() +
