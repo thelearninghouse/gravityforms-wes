@@ -86,7 +86,18 @@ GRAV_FIELDS.forEach(function(element) {
 		}
 	}
 });
-document.addEventListener("DOMContentLoaded", function(event) {
+
+if (document.readyState !== "loading") {
+	console.log("document is already ready");
+	gravityFields();
+} else {
+	document.addEventListener("DOMContentLoaded", function() {
+		console.log("document was not ready");
+		gravityFields();
+	});
+}
+
+function gravityFields() {
 	GRAV_FIELDS.forEach(function(element) {
 		var cookieVal = Cookies.get(element);
 		var getVal = getQueryVariable(element);
@@ -126,4 +137,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				getRandomInt(0, 99999);
 		});
 	}
-});
+}
