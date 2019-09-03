@@ -20,13 +20,3 @@ function tlh_gravity_forms_populate() {
 	wp_enqueue_script( 'tlh-gravity-forms-populate' );
 }
 add_action( 'wp_enqueue_scripts', 'tlh_gravity_forms_populate' );
-
-function tlh_ua_id_script() {
-	$ua_id = get_field( 'ua_id', 'options' );
-	if ( $ua_id ) {
-		echo '<script>';
-		echo 'var WES_UA = "' . $ua_id . '";';
-		echo '</script>';
-	}
-}
-add_action( 'wp_head', 'tlh_ua_id_script' );

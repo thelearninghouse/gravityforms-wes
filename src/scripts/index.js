@@ -174,7 +174,8 @@ function preSubmitFill(event) {
 
 	const clientIdField = document.querySelectorAll('[data-populate="clientid"]');
 	if (clientIdField) {
-		const clientId = getClientId(WES_UA);
+		const uaId = Object.keys(window.gaData)[0];
+		const clientId = getClientId(uaId);
 		if (clientId) {
 			clientIdField.forEach(function(value, i) {
 				clientIdField[i].value = clientId;
