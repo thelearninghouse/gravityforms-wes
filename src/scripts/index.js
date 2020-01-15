@@ -37,6 +37,21 @@ function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
+function getClientId(uaid) {
+	try {
+		var trackers = ga.getAll();
+		var i, len;
+
+		for (i = 0, len = trackers.length; i < len; i += 1) {
+			if (trackers[i].get("trackingId") === uaid) {
+				return trackers[i].get("clientId");
+			}
+		}
+	} catch (e) {}
+
+	return "Could not find GA";
+}
+
 function handleUtmSource() {
 	const originalRef = Cookies.get("originalreferrer")
 		? Cookies.get("originalreferrer")
@@ -134,4 +149,39 @@ function gravityFields() {
 				getRandomInt(0, 99999);
 		});
 	}
+}
+
+// jQuery('form[id^="gform"]').submit(function( event ) {
+// 	jQuery("#input_1_54").val(getClientId("UA-3724505-39"));
+// 	jQuery("#input_1_56").val(calcMD5(jQuery("#input_1_5").val()));
+// });
+
+const gravityForms = document.querySelectorAll('form[id^="gform"]');
+Array.from(gravityForms).forEach(element => {
+	element.addEventListener("submit", preSubmitFill);
+});
+
+function preSubmitFill(event) {
+	const userIdField = document.querySelectorAll('[data-populate="userid"]');
+	if (userIdField) {
+		const userId = Cookies.get("_email");
+		if (userId) {
+			userIdField.forEach(function(value, i) {
+				userIdField[i].value = userId;
+			});
+		}
+	}
+
+	const clientIdField = document.querySelectorAll('[data-populate="clientid"]');
+	if (clientIdField) {
+		const uaId = Object.keys(window.gaData)[0];
+		const clientId = getClientId(uaId);
+		if (clientId) {
+			clientIdField.forEach(function(value, i) {
+				clientIdField[i].value = clientId;
+			});
+		}
+	}
+
+	return true;
 }
